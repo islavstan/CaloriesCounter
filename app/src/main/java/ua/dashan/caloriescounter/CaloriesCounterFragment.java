@@ -1,11 +1,13 @@
 package ua.dashan.caloriescounter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +18,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.fanrunqi.waveprogress.WaveProgressView;
+import ua.dashan.caloriescounter.Adapters.RecyclerAdapter;
 import ua.dashan.caloriescounter.Database.DatabaseHelpher;
 import ua.dashan.caloriescounter.Database.DatabaseModel;
 
 public class CaloriesCounterFragment extends Fragment {
-    private RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     private DatabaseHelpher helpher;
-    private List<DatabaseModel> dbList;
-    private  RecyclerView.Adapter adapter;
+    public static List<DatabaseModel> dbList;
+
+
+
+
+
+    public static   RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-   public static WaveProgressView waveProgressbar;
-   public static TextView progressText;
-    private int maxProgress=2000;
+    public static WaveProgressView waveProgressbar;
+    public static TextView progressText;
+    private int maxProgress = 10000;
+    static final String STATE_SCORE = "progressScore";
 
     public static TextView getTextCal() {
         return textCal;
@@ -48,32 +57,42 @@ public class CaloriesCounterFragment extends Fragment {
 
     static int progress;
     private int oldDataLehgth;
-    public  static Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
+    public static Handler handler;
 
-            switch (msg.what) {
-                case one:
-                    //   for(progress=0;progress<=100;progress++){
-                    waveProgressbar.setCurrent(progress, progress+"");
-                    sendEmptyMessageDelayed(one, 100);
-            }
-        }
-    };
+
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View v= inflater.inflate(R.layout.fragment_calories_counter, container, false);
-        waveProgressbar =(WaveProgressView)v.findViewById(R.id.waveProgressbar3);
-      /*  bt=(Button)v.findViewById(R.id.bt);
-        bt.setOnClickListener(new View.OnClickListener() {
+
+
+
+        handler  = new Handler() {
             @Override
-            public void onClick(View v) {
-                handler.sendEmptyMessageDelayed(one, 1000);
-                progress+=10;
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+
+                switch (msg.what) {
+
+                    case one:
+                        //   for(progress=0;progress<=100;progress++){
+                        waveProgressbar.setCurrent(progress, progress+"");
+                        sendEmptyMessageDelayed(one, 100);
+                }
             }
-        });*/
-        Init();
+        };
+        waveProgressbar =(WaveProgressView)v.findViewById(R.id.waveProgressbar3);
+
+
+        waveProgressbar.setMaxProgress(maxProgress);
+        waveProgressbar.setWaveColor("#f0b55e");
+
+
+
+        //Init();
 
 
 
@@ -97,33 +116,52 @@ public class CaloriesCounterFragment extends Fragment {
         adapter=new HorizontalRecyclerAdapter(getActivity(),dbList);
         recyclerView.setAdapter(adapter);
 return v;
-    }
-  /*  @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // super.onActivityResult(requestCode, resultCode, data);
-        //Log.d("log","result="+resultCode);
-        if (resultCode==800)
-            Log.d("hot","result="+resultCode);
-        adapter.notifyDataSetChanged();
-        dbList=helpher.getDataFromDB();
-        adapter=new HorizontalRecyclerAdapter(getActivity(),dbList);
-        recyclerView.setAdapter(adapter);
-    }*/
+   }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+    }
+/*
+   @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+       // super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==800){
+            Log.d("loga","result="+resultCode);
             dbList=helpher.getDataFromDB();
-         if(oldDataLehgth<dbList.size())
+            Log.d("st",Integer.toString(resultCode));
+            adapter.notifyDataSetChanged();
+            adapter=new HorizontalRecyclerAdapter(getActivity(),dbList);
+            recyclerView.setAdapter(adapter);
+        }
+    }*/
+
+
+
+
+
+    //нужно решить эту проблему
+  /* @Override
+
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+
+           if (isVisibleToUser) {
+          dbList=helpher.getDataFromDB();
+       if(oldDataLehgth<dbList.size())
             adapter.notifyDataSetChanged();
            adapter=new HorizontalRecyclerAdapter(getActivity(),dbList);
            recyclerView.setAdapter(adapter);
-        }else{}
-        }
-    private void Init() {
+        }else{
+
+
+        }}*/
+
+  /*  private void Init() {
 
         waveProgressbar.setMaxProgress(maxProgress);
         waveProgressbar.setWaveColor("#f0b55e");
 
-    }}
+    }*/
+
+
+}

@@ -24,16 +24,16 @@ public class HorizontalRecyclerAdapter extends RecyclerView.Adapter<HorizontalRe
 
     static List<DatabaseModel> dbList;
     static Context context;
-   static DatabaseHelpher helpher;
+    static DatabaseHelpher helpher;
 
     private static final java.text.DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
 
-    HorizontalRecyclerAdapter(Context context, List<DatabaseModel> dbList ){
-      this.dbList = new ArrayList<DatabaseModel>();
+  public  HorizontalRecyclerAdapter(Context context, List<DatabaseModel> dbList) {
+        this.dbList = new ArrayList<DatabaseModel>();
         this.context = context;
         this.dbList = dbList;
-        helpher=new DatabaseHelpher(context);
+        helpher = new DatabaseHelpher(context);
 
     }
 
@@ -93,7 +93,7 @@ public class HorizontalRecyclerAdapter extends RecyclerView.Adapter<HorizontalRe
             helpher.insertCaloriesCountIntoDB(date,cal);
             int progressFromDb=helpher.getCaloriesCount(date);
             CaloriesCounterFragment.progress=helpher.getCaloriesCountForCalendar(date);
-            CaloriesCounterFragment.progressText.setText( progressFromDb+" / "+"2000");
+           // CaloriesCounterFragment.progressText.setText( progressFromDb+" / "+"2000");
 
 
 

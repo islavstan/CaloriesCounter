@@ -114,16 +114,16 @@ public class UserFoodInformationFragment extends Fragment {
         dbList=helpher.getDataFromDB();
         adapter=new RecyclerAdapter(getActivity(),dbList);
         recyclerView.setAdapter(adapter);
+
     }
+
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
 
     }
-    /*public  static void addFood(){
-       adapter.notifyDataSetChanged();
-    }*/
+
 
 
 

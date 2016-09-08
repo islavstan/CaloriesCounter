@@ -12,16 +12,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+
           //  Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
            // setSupportActionBar(toolbar);
                TabLayout tab_layout = (TabLayout) findViewById(R.id.tab_layout);
                 tab_layout.addTab(tab_layout.newTab().setText("Рацион"));
                 tab_layout.addTab(tab_layout.newTab().setText("Счётчик"));
                 tab_layout.addTab(tab_layout.newTab().setText("Календарь"));
-             final ViewPager view_pager = (ViewPager) findViewById(R.id.pager);
-              final ViewPagerAdapter adapter = new ViewPagerAdapter
-        (getSupportFragmentManager(), tab_layout.getTabCount());
+
+
+            final ViewPager view_pager = (ViewPager) findViewById(R.id.pager);
+      view_pager.setOffscreenPageLimit(2);
+         final ViewPagerAdapter adapter = new ViewPagerAdapter
+      (getSupportFragmentManager(), tab_layout.getTabCount());
+
                view_pager.setAdapter(adapter);
+
+
+
                view_pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tab_layout));
                tab_layout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                      @Override
@@ -34,9 +42,17 @@ public class MainActivity extends AppCompatActivity {
                       @Override
             public void onTabReselected(TabLayout.Tab tab) {
                           }
-        });
-    }
-   /*   @Override
+        });}
+
+
+   /* @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState,"fragmentInstanceSaved",getSupportFragmentManager().findFragmentById(R.id.pager));
+
+    }*/
+
+    /*   @Override
     public boolean onCreateOptionsMenu(Menu menu) {
             // Inflate the menu; this adds items to the action bar if it is present.<br />
             getMenuInflater().inflate(R.menu.menu_main, menu);

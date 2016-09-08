@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import ua.dashan.caloriescounter.CaloriesCounterFragment;
 import ua.dashan.caloriescounter.Database.DatabaseHelpher;
 import ua.dashan.caloriescounter.Database.DatabaseModel;
+import ua.dashan.caloriescounter.HorizontalRecyclerAdapter;
 import ua.dashan.caloriescounter.R;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
@@ -64,9 +66,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         notifyItemRangeChanged(position,dbList.size());
         dbList.remove(position);
     }
-    public void addItem(){
-        notifyDataSetChanged();
-    }
+
 
     @Override
     public int getItemCount() {
@@ -118,13 +118,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                                              public boolean onMenuItemClick(MenuItem item) {
                                                  switch (item.getItemId()) {
                                                      case R.id.delete_menu:
-                                                         //dbList.remove(position);
+
                                                        helpher.deleteARow(dbList.get(position).getFoodName());
                                                          deleteItem(position);
-                                                        // notifyDataSetChanged();
+                                                         //обновляем HorizontalRecyclerAdapter
+                                                         CaloriesCounterFragment.dbList=helpher.getDataFromDB();
+                                                         CaloriesCounterFragment.adapter=new HorizontalRecyclerAdapter(context,CaloriesCounterFragment.dbList);
+                                                         CaloriesCounterFragment.recyclerView.setAdapter(CaloriesCounterFragment.adapter);
 
-                                                        // notifyItemRemoved(position);
-                                                         //notifyItemRangeChanged(position,dbList.size());
                                                          return true;
                                                      default:}
 

@@ -23,6 +23,9 @@ private MaterialCalendarView calendarView;
     private TextView textDate;
     DatabaseHelpher helpher;
 
+
+
+
     private static final java.text.DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

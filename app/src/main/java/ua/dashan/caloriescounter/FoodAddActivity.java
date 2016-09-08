@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 
+import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.util.Log;
 import android.view.View;
@@ -25,11 +26,15 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import ua.dashan.caloriescounter.Adapters.RecyclerAdapter;
 import ua.dashan.caloriescounter.Database.DatabaseHelpher;
+import ua.dashan.caloriescounter.Database.DatabaseModel;
 
 public class FoodAddActivity extends AppCompatActivity {
     //http://www.androidhive.info/2013/09/android-working-with-camera-api/
@@ -38,6 +43,7 @@ public class FoodAddActivity extends AppCompatActivity {
     private static final int PICK_FROM_GALLERY = 2;
 
     private DatabaseHelpher helpher;
+
 
     // Activity request codes
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
@@ -54,7 +60,23 @@ public class FoodAddActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_add_food);
-        setupWindowAnimations();
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //стрелка назад
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //скрываем системный тулбар
+        getSupportActionBar().setTitle(null);
+        // getSupportActionBar().setDisplayShowHomeEnabled(false);
+        //  this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //toolbar.setTitle("");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        //  setupWindowAnimations();
 
         foodPhoto=(CircleImageView)findViewById(R.id.food_image);
         add_button=(Button)findViewById(R.id.add_button);
@@ -64,6 +86,10 @@ public class FoodAddActivity extends AppCompatActivity {
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(food_name.getText().toString().equals("")||food_calories.getText().toString().equals("")||food_calories.getText().toString().startsWith("0")){
+                    Toast toast =Toast.makeText(FoodAddActivity.this,"Что-то не так",Toast.LENGTH_SHORT);
+                    toast.show();
+                }else{
                 String name=food_name.getText().toString();
                 int calories = Integer.parseInt(food_calories.getText().toString());
                 foodPhoto.buildDrawingCache();
@@ -71,12 +97,18 @@ public class FoodAddActivity extends AppCompatActivity {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
                 helpher = new DatabaseHelpher(FoodAddActivity.this);
+
+
                 helpher.insertIntoDB(name,calories,stream.toByteArray());
                UserFoodInformationFragment.adapter.notifyDataSetChanged();
+                    //обновляем HorizontalRecyclerAdapter
+                    CaloriesCounterFragment.dbList=helpher.getDataFromDB();
+               CaloriesCounterFragment.adapter=new HorizontalRecyclerAdapter(getBaseContext(),CaloriesCounterFragment.dbList);
+                    CaloriesCounterFragment.recyclerView.setAdapter(CaloriesCounterFragment.adapter);
+
                 Toast toast =Toast.makeText(FoodAddActivity.this,"Продукт добавлен",Toast.LENGTH_SHORT);
                 toast.show();
                  setResult(800);
-
 
 
                 finish();
@@ -84,7 +116,7 @@ public class FoodAddActivity extends AppCompatActivity {
 
 
 
-            }
+            }}
         });
         //open dialog for choose camera/gallery
         final String[] option = new String[] { "Сделать снимок",
@@ -99,12 +131,12 @@ public class FoodAddActivity extends AppCompatActivity {
 
                 Log.e("Selected Item", String.valueOf(which));
                 if (which == 0) {
-                    //  callCamera();
+
                     captureImage();
                 }
                 if (which == 1) {
                     photoFromGallery();
-                    // callGallery();
+
                 }
 
             }
@@ -242,15 +274,7 @@ public class FoodAddActivity extends AppCompatActivity {
 
         startActivityForResult(i, RESULT_LOAD_IMAGE);
     }
-    private void setupWindowAnimations() {
-        Slide slide = new Slide();
-        slide.setDuration(1000);
-        getWindow().setExitTransition(slide);
 
-        Slide slide2 = new Slide();
-        slide.setDuration(1000);
-        getWindow().setReturnTransition(slide);
-    }
 
 
 }

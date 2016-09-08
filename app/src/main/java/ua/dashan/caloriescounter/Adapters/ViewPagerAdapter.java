@@ -14,6 +14,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public ViewPagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
+
     }
 
     @Override
@@ -32,6 +33,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 return null;
         }
     }
+
 
     @Override
     public int getCount() {
