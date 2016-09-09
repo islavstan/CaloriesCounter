@@ -13,21 +13,27 @@
     >
     <TextView
 
-        android:id="@+id/progressText"
+        android:id="@+id/targetText"
         android:padding="10dp"
         android:gravity="center"
-
         android:layout_centerHorizontal="true"
-        android:textSize="24dp"
+        android:text="Ваша цель: "
+        android:textSize="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/targetET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/targetText"/>
 
 
     <cn.fanrunqi.waveprogress.WaveProgressView
-       android:layout_below="@+id/progressText"
+       android:layout_below="@+id/targetText"
         android:id="@+id/waveProgressbar3"
         android:background="@drawable/man"
         android:layout_marginTop="20dp"
+
         android:layout_centerHorizontal="true"
         android:layout_width="256dp"
         android:layout_height="256dp"

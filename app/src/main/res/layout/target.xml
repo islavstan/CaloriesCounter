@@ -1,6 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
 
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Воспользуйтесь нашим расчётом:"
+        android:textSize="16dp"
+        android:id="@+id/txt_info"
+       />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/weightLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="number"
+            android:textSize="16dp"
+            android:hint="Вес,кг"
+            android:id="@+id/weight"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/sizeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="number"
+            android:textSize="16dp"
+            android:hint="Рост, см"
+            android:id="@+id/size"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/ageLayout"
+
+        android:layout_width="150dp"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="number"
+            android:textSize="16dp"
+            android:hint="Возраст"
+            android:id="@+id/age"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/sexSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:ms_enableErrorLabel="false"
+        app:ms_enableFloatingLabel="false"
+
+        app:ms_hint="Пол"
+        android:layout_marginTop="5dp"
+       />
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/targetSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:ms_enableErrorLabel="false"
+        app:ms_enableFloatingLabel="false"
+
+        app:ms_hint="Цель"
+        android:layout_marginTop="5dp"
+        />
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/lifeStyleSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:ms_enableErrorLabel="false"
+        app:ms_enableFloatingLabel="false"
+
+        app:ms_hint="Образ жизни"
+        android:layout_marginTop="5dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Либо укажите желаемое кол-во каллорий самостоятельно: "/>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/userLayout"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:inputType="number"
+        android:textSize="16dp"
+        android:hint="Ваше значение"
+        android:id="@+id/userTarget"
+        />
+    </android.support.design.widget.TextInputLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:background="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Отмена"
+            android:id="@+id/cancelButton"
+            />
+        <Button
+            android:background="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ok"
+            android:layout_weight="1"
+            android:id="@+id/okButton"
+            />
+    </LinearLayout>
 </LinearLayout>

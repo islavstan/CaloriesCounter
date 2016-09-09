@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -26,6 +28,7 @@ public class CaloriesCounterFragment extends Fragment {
     public static RecyclerView recyclerView;
     private DatabaseHelpher helpher;
     public static List<DatabaseModel> dbList;
+    private EditText targetET;
 
 
 
@@ -97,7 +100,15 @@ public class CaloriesCounterFragment extends Fragment {
 
 
 
-
+        targetET =(EditText)v.findViewById(R.id.targetET);
+        targetET.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getFragmentManager();
+                TargetDialogFragment dialogFragment = new TargetDialogFragment ();
+                dialogFragment.show(fm, "Sample Fragment");
+            }
+        });
         progressText=(TextView)v.findViewById(R.id.progressText);
 
 //        int cCount = helpher.getCaloriesCount(dateString);
