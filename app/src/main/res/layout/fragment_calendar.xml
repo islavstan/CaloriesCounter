@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     tools:context="ua.dashan.caloriescounter.CalendarFragment">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,6 +23,15 @@
           android:textAlignment="center"
             android:textSize="16dp"
             android:id="@+id/textDate"/>
+        <com.google.android.gms.ads.AdView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/banner"
+            ads:adUnitId="@string/banner_id">
+
+        </com.google.android.gms.ads.AdView>
 
     </RelativeLayout>
 

@@ -35,7 +35,7 @@ private MaterialCalendarView calendarView;
         CalendarDay date = new CalendarDay();
         calendarView.setOnDateChangedListener(this);
         helpher=new DatabaseHelpher(getActivity());
-
+  Ads.showBanner(v);
         return v;
     }
 

@@ -28,7 +28,7 @@ public class CaloriesCounterFragment extends Fragment {
     public static RecyclerView recyclerView;
     private DatabaseHelpher helpher;
     public static List<DatabaseModel> dbList;
-    private EditText targetET;
+    public static EditText targetET;
 
 
 
@@ -61,7 +61,7 @@ public class CaloriesCounterFragment extends Fragment {
     static int progress;
     private int oldDataLehgth;
     public static Handler handler;
-
+    int targetIsNull;
 
 
 
@@ -100,7 +100,8 @@ public class CaloriesCounterFragment extends Fragment {
 
 
 
-        targetET =(EditText)v.findViewById(R.id.targetET);
+        targetET =(EditText)v.findViewById(R.id.userTarget);
+
         targetET.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,6 +127,14 @@ public class CaloriesCounterFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         adapter=new HorizontalRecyclerAdapter(getActivity(),dbList);
         recyclerView.setAdapter(adapter);
+
+
+        targetIsNull =helpher.targetIsNull();
+        if(targetIsNull>0){
+            targetET.setText(helpher.getTarget()+" каллорий");
+        }else{
+            targetET.setText("...");
+        }
 return v;
    }
 

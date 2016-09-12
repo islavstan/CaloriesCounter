@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -15,11 +16,14 @@ public class DatabaseHelpher extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION =7;
     private static final String CALORIES_COUNT_TABLE = "CALCOUNT";
     private static final String FOOD_TABLE = "food";
+    private static final String TARGET_TABLE = "target";
     private static final String CREATE_FOOD_TABLE = "create table "+FOOD_TABLE +"(name TEXT primary key , calories INTEGER , image BLOB)";
     private static final String CREATE_CALORIES_COUNT_TABLE= "create table "+CALORIES_COUNT_TABLE +"(date TEXT primary key , calcount INTEGER )";
+    private static final String CREATE_TARGET_TABLE= "create table "+TARGET_TABLE +"( usertarget INTEGER )";
     Context context;
     int calories;
     int calCount;
+    int userTarget;
 
     public DatabaseHelpher(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -30,12 +34,15 @@ public class DatabaseHelpher extends SQLiteOpenHelper {
 
         db.execSQL(CREATE_FOOD_TABLE);
         db.execSQL(CREATE_CALORIES_COUNT_TABLE);
+        db.execSQL(CREATE_TARGET_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         db.execSQL("DROP TABLE IF EXISTS " + FOOD_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TARGET_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CALORIES_COUNT_TABLE);
 
         // Create tables again
         onCreate(db);
@@ -60,8 +67,55 @@ public class DatabaseHelpher extends SQLiteOpenHelper {
             db.execSQL(update);
             cursor.close();
             db.close();
+        }}
+
+
+
+    public void insertTargetIntoDB(int caloriesTarget) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query ="SELECT * FROM target";
+        Cursor cursor =db.rawQuery(query,null);
+        if(cursor.getCount()==0){
+            ContentValues values = new ContentValues();
+            values.put("usertarget", caloriesTarget);
+            db.insert(TARGET_TABLE, null, values);
+            Log.d("insert",Integer.toString(cursor.getCount()));
+            cursor.close();
+            db.close();
+        }else{
+            String update ="UPDATE target SET usertarget = "+"'"+caloriesTarget+"'";
+            db.execSQL(update);
+            Log.d("update",Integer.toString(cursor.getCount()));
+            cursor.close();
+            db.close();
+        }}
+    //узнаем есть ли цель
+        public int targetIsNull(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            String query ="SELECT * FROM target";
+            Cursor cursor =db.rawQuery(query,null);
+            if(cursor.getCount()==0){
+
+                cursor.close();
+                db.close();
+                return 0;
+            }
+            else{
+                cursor.close();
+                db.close();
+                return 1;}
         }
 
+
+    public int getTarget(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor=db.rawQuery("SELECT * FROM target",null);
+        while (cursor.moveToNext()) {
+            userTarget = cursor.getInt(0);
+        }
+        cursor.close();
+        db.close();
+        return userTarget;}
 
        /* String query = "INSERT INTO CALCOUNT (date,calcount) VALUES ( " + date + " , "
                 + caloriesCount + " ) ON DUPLICATE KEY UPDATE calcount=calcount + " + caloriesCount + " ;";*/
@@ -90,7 +144,7 @@ public class DatabaseHelpher extends SQLiteOpenHelper {
              db.insert(CALORIES_COUNT_TABLE, null, values);
              cursor.close();
              db.close();
-        }*/}
+        }*/
 
 
 
