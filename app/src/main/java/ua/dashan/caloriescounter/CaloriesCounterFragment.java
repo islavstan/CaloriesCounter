@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,32 +40,24 @@ public class CaloriesCounterFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     public static WaveProgressView waveProgressbar;
     public static TextView progressText;
-    private int maxProgress = 10000;
-    static final String STATE_SCORE = "progressScore";
-
-    public static TextView getTextCal() {
-        return textCal;
-    }
 
 
-    static TextView textCal;
 
-    public static int getOne() {
-        return one;
-    }
+
+
+
+
 
     private static final int one = 0X0001;
 
-    public static int getProgress() {
-        return progress;
-    }
 
     static int progress;
+    static int progressForStart;
     private int oldDataLehgth;
     public static Handler handler;
     int targetIsNull;
 
-
+    private static final java.text.DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
 
     @Override
@@ -71,26 +65,10 @@ public class CaloriesCounterFragment extends Fragment {
 
         View v= inflater.inflate(R.layout.fragment_calories_counter, container, false);
 
-
-
-        handler  = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-
-                switch (msg.what) {
-
-                    case one:
-                        //   for(progress=0;progress<=100;progress++){
-                        waveProgressbar.setCurrent(progress, progress+"");
-                        sendEmptyMessageDelayed(one, 100);
-                }
-            }
-        };
         waveProgressbar =(WaveProgressView)v.findViewById(R.id.waveProgressbar3);
 
 
-        waveProgressbar.setMaxProgress(maxProgress);
+      //  waveProgressbar.setMaxProgress(maxProgress);
         waveProgressbar.setWaveColor("#f0b55e");
 
 
@@ -135,6 +113,31 @@ public class CaloriesCounterFragment extends Fragment {
         }else{
             targetET.setText("...");
         }
+
+        CalendarDay day = new CalendarDay();
+        String date =FORMATTER.format(day.getDate());
+        if(helpher.getCaloriesCountForCalendar(date) !=0){
+        progressForStart=helpher.getCaloriesCountForCalendar(date);}
+
+
+        if(helpher.getTarget()!=0){
+waveProgressbar.setMaxProgress(helpher.getTarget());}
+        waveProgressbar.setCurrent(progressForStart,progressForStart+"");
+
+        handler  = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+
+                switch (msg.what) {
+
+                    case one:
+                        //   for(progress=0;progress<=100;progress++){
+                        waveProgressbar.setCurrent(progress, progress+"");
+                        sendEmptyMessageDelayed(one, 100);
+                }
+            }
+        };
 return v;
    }
 
